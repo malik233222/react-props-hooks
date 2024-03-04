@@ -1,47 +1,31 @@
-import Buttons from "./components/Buttons"
-import Cards from "./components/Cards"
-import Header from "./components/Header"
-import Navbar from "./components/Navbar"
-import { useEffect, useState } from "react"
+import Image from "./components/Image"
+import Input from "./components/Input"
+import { useState } from "react";
+
 
 function App() {
 
-  const [data, setData] = useState([]);
+  const [img, setImg] = useState("")
 
 
-  useEffect(() => {
-    fetch('https://fakestoreapi.com/products')
-      .then(response => {
-        response.json()
-          .then(result => {
-            setData(result)
-          })
-      })
-  }, []);
+  async function send(value) {
+    setImg('https://img.pikbest.com/png-images/20190918/cartoon-snail-loading-loading-gif-animation_2734139.png!bw700')
+    const result = await fetch(`https://source.unsplash.com/random/900x700/?${value}`)
+    setImg(result.url)
+
+  }
+
 
   return (
     <>
-      <header>
-        <Navbar />
-      </header>
-
-      <Buttons title="All products" mode="btn btn-info " />
-
-      <section>
-        <h1 className="text-center my-5">Products</h1>
-
-        <div className="container">
-          <div className="row">
-            {
-              data.map((item) => (
-
-                <Cards key={item.id} items={item} />
-              ))
-            }
+      <div className="container">
+        <div className="row">
+          <div className="col-6 offset-3 mt-5">
+            <Input send={send} />
+            <Image src={img} />
           </div>
         </div>
-
-      </section>
+      </div>
     </>
   )
 }
